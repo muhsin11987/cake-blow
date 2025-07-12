@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let analyser;
   let microphone;
 
-  // Обновление счётчика активных свечей
   function updateCandleCount() {
     const activeCandles = candles.filter(
       (candle) => !candle.classList.contains("out")
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     candleCountDisplay.textContent = activeCandles;
   }
 
-  // Добавить свечку в заданные координаты
   function addCandle(left, top) {
     const candle = document.createElement("div");
     candle.className = "candle";
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCandleCount();
   }
 
-  // Клик по торту добавляет свечу
   cake.addEventListener("click", function (event) {
     const rect = cake.getBoundingClientRect();
     const left = event.clientX - rect.left;
@@ -38,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
     addCandle(left, top);
   });
 
-  // Проверка, дует ли пользователь (для задувания свечей)
   function isBlowing() {
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
@@ -53,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return average > 40;
   }
 
-  // Задувание свечей
   function blowOutCandles() {
     let blownOut = 0;
 
@@ -71,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Доступ к микрофону
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -90,11 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("getUserMedia not supported on your browser!");
   }
 
-  // Чтение параметров из URL
   const count = parseInt(getParam("candles"));
   const name = getParam("name");
 
-  // Автоматическая расстановка свечей по кругу на верхнем слое торта
+  // ✨ Новый способ расстановки свечей по дуге сверху
   if (!isNaN(count) && count > 0) {
     const layerTop = document.querySelector(".layer-top");
     const rect = layerTop.getBoundingClientRect();
@@ -102,17 +95,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const centerX = rect.left - cakeRect.left + rect.width / 2;
     const centerY = rect.top - cakeRect.top + rect.height / 2;
-    const radius = 40;
+
+    const radiusX = 70; // ширина дуги
+    const radiusY = 30; // высота дуги
+
+    const startAngle = -60; // начало дуги в градусах
+    const endAngle = 60;    // конец дуги в градусах
 
     for (let i = 0; i < count; i++) {
-      const angle = (2 * Math.PI * i) / count;
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
+      const angleDeg = startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+      const angleRad = (angleDeg * Math.PI) / 180;
+      const x = centerX + radiusX * Math.cos(angleRad);
+      const y = centerY + radiusY * Math.sin(angleRad);
       addCandle(x, y);
     }
   }
 
-  // Замена заголовка на имя из параметра
   if (name) {
     const titleEl = document.getElementById("title") || document.querySelector("h1");
     if (titleEl) {
@@ -121,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Получение параметров из URL
 function getParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
