@@ -87,8 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // 👇 Дополнительно: создаём свечи по ссылке
   const count = parseInt(getParam("candles"));
   const name = getParam("name");
-  const cakeCenter = { x: 150, y: 100 }; // центр торта, на глаз
-  const radius = 60;
+const cakeCenter = { x: 125, y: 50 }; // центр верхнего слоя торта
+const radius = 40;
+
 
   if (!isNaN(count) && count > 0) {
     for (let i = 0; i < count; i++) {
