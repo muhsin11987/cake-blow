@@ -1,91 +1,69 @@
-<!-- Ползунок громкости сдувания свечей -->
-<style>
-  .slider-container {
-    position: fixed;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background: #222;
-    border-radius: 15px;
-    padding: 10px 15px;
-    box-shadow: 0 0 10px #000;
-    width: 50px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    user-select: none;
-    z-index: 1000;
-  }
-  .slider-container label {
-    writing-mode: vertical-rl;
-    color: #f5deb3;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 10px;
-    cursor: default;
-  }
-  input[type=range] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 140px;
-    background: transparent;
-    writing-mode: bt-lr; /* вертикальный слайдер */
-    transform: rotate(-90deg);
-    margin: 0;
-    cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #f4e2c1, #b27a2b);
-    border-radius: 14px 14px 14px 14px / 40% 40% 60% 60%;
-    box-shadow: inset 0 0 8px #ffdd88, 0 0 5px #b27a2b;
-    cursor: pointer;
-    border: 1.5px solid #6a4a00;
-    position: relative;
-  }
-  input[type=range]::-moz-range-thumb {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #f4e2c1, #b27a2b);
-    border-radius: 14px 14px 14px 14px / 40% 40% 60% 60%;
-    box-shadow: inset 0 0 8px #ffdd88, 0 0 5px #b27a2b;
-    cursor: pointer;
-    border: 1.5px solid #6a4a00;
-    position: relative;
-  }
-  input[type=range]::-webkit-slider-runnable-track {
-    height: 6px;
-    background: #6a4a00;
-    border-radius: 3px;
-  }
-  input[type=range]::-moz-range-track {
-    height: 6px;
-    background: #6a4a00;
-    border-radius: 3px;
-  }
-  .slider-value {
-    color: #f4e2c1;
-    font-weight: 600;
-    margin-top: 10px;
-    font-size: 16px;
-    user-select: none;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Candle Blow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <style>
+      .slider-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #1c1c1c;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        font-family: sans-serif;
+      }
 
-<div class="slider-container" title="Настрой порог громкости сдувания свечей">
-  <label for="thresholdRange">Blow</label>
-  <input
-    type="range"
-    id="thresholdRange"
-    min="10"
-    max="100"
-    value="40"
-    step="1"
-    orient="vertical"
-  />
-  <div class="slider-value" id="thresholdValue">40</div>
-</div>
+      .slider-container label {
+        color: #f8f8f8;
+        font-size: 12px;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      #volumeSlider {
+        width: 120px;
+        accent-color: #ffc107;
+      }
+
+      #volumeValue {
+        color: #ffc107;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Happy Birthday!</h1>
+
+    <div class="cake">
+      <div class="plate"></div>
+      <div class="layer layer-bottom"></div>
+      <div class="layer layer-middle"></div>
+      <div class="layer layer-top"></div>
+      <div class="icing"></div>
+      <div class="drip drip1"></div>
+      <div class="drip drip2"></div>
+      <div class="drip drip3"></div>
+    </div>
+
+    <!-- 🔊 Ползунок громкости -->
+    <div class="slider-container">
+      <label for="volumeSlider">Blow Sensitivity</label>
+      <input type="range" id="volumeSlider" min="10" max="100" value="40" />
+      <div id="volumeValue">40</div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
