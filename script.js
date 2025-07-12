@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let analyser;
   let microphone;
 
-  // Координаты стартовых свечей
+  // Начальный порог громкости
+  let blowThreshold = 40;
+
   const candlePositions = [
     [42.5, 6.5],
     [59.5, 22.5],
@@ -23,10 +25,9 @@ document.addEventListener("DOMContentLoaded", function () {
     [110.5, -0.5],
     [112.5, 35.5],
     [80.5, 37.5],
-    [143.5, 57.5]
+    [143.5, 57.5],
   ];
 
-  // Функция для создания свечи
   function addCandle(left, top) {
     const candle = document.createElement("div");
     candle.className = "candle";
@@ -41,10 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     candles.push(candle);
   }
 
-  // Добавить свечи по координатам при загрузке
   candlePositions.forEach(([x, y]) => addCandle(x, y));
 
-  // Добавление свечи при клике
   cake.addEventListener("click", function (event) {
     const rect = cake.getBoundingClientRect();
     const left = event.clientX - rect.left;
@@ -52,8 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addCandle(left, top);
   });
 
-  // Проверка, дует ли пользователь
   function isBlowing() {
+    if (!analyser) return false;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
     analyser.getByteFrequencyData(dataArray);
@@ -64,10 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     let average = sum / bufferLength;
-    return average > 40;
+    return average > blowThreshold;
   }
 
-  // Задувание свечей
   function blowOutCandles() {
     if (isBlowing()) {
       candles.forEach((candle) => {
@@ -78,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Настройка микрофона
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -97,7 +94,16 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("getUserMedia not supported on your browser!");
   }
 
-  // Задание имени в заголовке, если есть параметр ?name=...
+  // Ползунок управления порогом громкости
+  const thresholdInput = document.getElementById("thresholdRange");
+  const thresholdValue = document.getElementById("thresholdValue");
+
+  thresholdInput.addEventListener("input", () => {
+    blowThreshold = Number(thresholdInput.value);
+    thresholdValue.textContent = blowThreshold;
+  });
+
+  // Имя в заголовке из URL
   const name = getParam("name");
   if (name) {
     const titleEl = document.getElementById("title") || document.querySelector("h1");
@@ -106,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Получить параметр из URL
   function getParam(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
