@@ -84,3 +84,22 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("getUserMedia not supported on your browser!");
   }
 });
+function getParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+window.onload = () => {
+  const count = parseInt(getParam('candles'));
+  if (!isNaN(count) && count > 0) {
+    for (let i = 0; i < count; i++) {
+      createCandle();
+    }
+  }
+
+  const name = getParam('name');
+  if (name) {
+    const titleEl = document.getElementById('title') || document.querySelector('h1');
+    if (titleEl) titleEl.textContent = `Happy Birthday, ${name}!`;
+  }
+};
