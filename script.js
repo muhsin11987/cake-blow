@@ -91,9 +91,9 @@ function getParam(name) {
 
 window.onload = () => {
   const count = parseInt(getParam('candles'));
-  if (!isNaN(count) && count > 0) {
-    for (let i = 0; i < count; i++) {
-      createCandle();
+  if (!isNaN(count) && count > 10) {
+    for (let i = 10; i < count; i++) {
+      createCandle(10);
     }
   }
 
